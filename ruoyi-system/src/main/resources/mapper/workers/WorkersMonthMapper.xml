@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.workers.mapper.WorkersMonthMapper">
+    
+    <resultMap type="WorkersMonth" id="WorkersMonthResult">
+        <result property="id"    column="id"    />
+        <result property="workerId"    column="worker_id"    />
+        <result property="month"    column="month"    />
+        <result property="hours"    column="hours"    />
+        <result property="price"    column="price"    />
+        <result property="advance"    column="advance"    />
+        <result property="rest"    column="rest"    />
+        <result property="status"    column="status"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectWorkersMonthVo">
+        select id, worker_id, month, hours, price, advance, rest, status, remark, create_by, create_time, update_by, update_time from workers_month
+    </sql>
+
+    <select id="selectWorkersMonthList" parameterType="WorkersMonth" resultMap="WorkersMonthResult">
+        <include refid="selectWorkersMonthVo"/>
+        <where>  
+            <if test="workerId != null "> and worker_id = #{workerId}</if>
+            <if test="month != null "> and month = #{month}</if>
+            <if test="hours != null "> and hours = #{hours}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="advance != null "> and advance = #{advance}</if>
+            <if test="rest != null "> and rest = #{rest}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectWorkersMonthById" parameterType="Long" resultMap="WorkersMonthResult">
+        <include refid="selectWorkersMonthVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertWorkersMonth" parameterType="WorkersMonth" useGeneratedKeys="true" keyProperty="id">
+        insert into workers_month
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="workerId != null">worker_id,</if>
+            <if test="month != null">month,</if>
+            <if test="hours != null">hours,</if>
+            <if test="price != null">price,</if>
+            <if test="advance != null">advance,</if>
+            <if test="rest != null">rest,</if>
+            <if test="status != null">status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="workerId != null">#{workerId},</if>
+            <if test="month != null">#{month},</if>
+            <if test="hours != null">#{hours},</if>
+            <if test="price != null">#{price},</if>
+            <if test="advance != null">#{advance},</if>
+            <if test="rest != null">#{rest},</if>
+            <if test="status != null">#{status},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWorkersMonth" parameterType="WorkersMonth">
+        update workers_month
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="workerId != null">worker_id = #{workerId},</if>
+            <if test="month != null">month = #{month},</if>
+            <if test="hours != null">hours = #{hours},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="advance != null">advance = #{advance},</if>
+            <if test="rest != null">rest = #{rest},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWorkersMonthById" parameterType="Long">
+        delete from workers_month where id = #{id}
+    </delete>
+
+    <delete id="deleteWorkersMonthByIds" parameterType="String">
+        delete from workers_month where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.workers.mapper.WorkersBasicMapper">
+    
+    <resultMap type="WorkersBasic" id="WorkersBasicResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="sex"    column="sex"    />
+        <result property="age"    column="age"    />
+        <result property="avatar"    column="avatar"    />
+        <result property="address"    column="address"    />
+        <result property="workerType"    column="worker_type"    />
+        <result property="leader"    column="leader"    />
+        <result property="position"    column="position"    />
+        <result property="idCardUrl"    column="id_card_url"    />
+        <result property="bank"    column="bank"    />
+        <result property="bankCard"    column="bank_card"    />
+        <result property="bankCardUrl"    column="bank_card_url"    />
+        <result property="status"    column="status"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <resultMap id="WorkersBasicWorkersMonthResult" type="WorkersBasic" extends="WorkersBasicResult">
+        <collection property="workersMonthList" notNullColumn="sub_id" javaType="java.util.List" resultMap="WorkersMonthResult" />
+    </resultMap>
+
+    <resultMap type="WorkersMonth" id="WorkersMonthResult">
+        <result property="id"    column="sub_id"    />
+        <result property="workerId"    column="sub_worker_id"    />
+        <result property="month"    column="sub_month"    />
+        <result property="hours"    column="sub_hours"    />
+        <result property="price"    column="sub_price"    />
+        <result property="advance"    column="sub_advance"    />
+        <result property="rest"    column="sub_rest"    />
+        <result property="status"    column="sub_status"    />
+        <result property="remark"    column="sub_remark"    />
+        <result property="createBy"    column="sub_create_by"    />
+        <result property="createTime"    column="sub_create_time"    />
+        <result property="updateBy"    column="sub_update_by"    />
+        <result property="updateTime"    column="sub_update_time"    />
+    </resultMap>
+
+    <sql id="selectWorkersBasicVo">
+        select id, name, sex, age, avatar, address, worker_type, leader, position, id_card_url, bank, bank_card, bank_card_url, status, remark, create_by, create_time, update_by, update_time from workers_basic
+    </sql>
+
+    <select id="selectWorkersBasicList" parameterType="WorkersBasic" resultMap="WorkersBasicResult">
+        <include refid="selectWorkersBasicVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="sex != null  and sex != ''"> and sex = #{sex}</if>
+            <if test="age != null "> and age = #{age}</if>
+            <if test="avatar != null  and avatar != ''"> and avatar = #{avatar}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="workerType != null "> and worker_type = #{workerType}</if>
+            <if test="leader != null  and leader != ''"> and leader = #{leader}</if>
+            <if test="position != null  and position != ''"> and position = #{position}</if>
+            <if test="idCardUrl != null  and idCardUrl != ''"> and id_card_url = #{idCardUrl}</if>
+            <if test="bank != null  and bank != ''"> and bank = #{bank}</if>
+            <if test="bankCard != null  and bankCard != ''"> and bank_card = #{bankCard}</if>
+            <if test="bankCardUrl != null  and bankCardUrl != ''"> and bank_card_url = #{bankCardUrl}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectWorkersBasicById" parameterType="Long" resultMap="WorkersBasicWorkersMonthResult">
+        select a.id, a.name, a.sex, a.age, a.avatar, a.address, a.worker_type, a.leader, a.position, a.id_card_url, a.bank, a.bank_card, a.bank_card_url, a.status, a.remark, a.create_by, a.create_time, a.update_by, a.update_time,
+ b.id as sub_id, b.worker_id as sub_worker_id, b.month as sub_month, b.hours as sub_hours, b.price as sub_price, b.advance as sub_advance, b.rest as sub_rest, b.status as sub_status, b.remark as sub_remark, b.create_by as sub_create_by, b.create_time as sub_create_time, b.update_by as sub_update_by, b.update_time as sub_update_time
+        from workers_basic a
+        left join workers_month b on b.worker_id = a.id
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertWorkersBasic" parameterType="WorkersBasic" useGeneratedKeys="true" keyProperty="id">
+        insert into workers_basic
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="sex != null">sex,</if>
+            <if test="age != null">age,</if>
+            <if test="avatar != null">avatar,</if>
+            <if test="address != null">address,</if>
+            <if test="workerType != null">worker_type,</if>
+            <if test="leader != null">leader,</if>
+            <if test="position != null">position,</if>
+            <if test="idCardUrl != null">id_card_url,</if>
+            <if test="bank != null">bank,</if>
+            <if test="bankCard != null">bank_card,</if>
+            <if test="bankCardUrl != null">bank_card_url,</if>
+            <if test="status != null">status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="age != null">#{age},</if>
+            <if test="avatar != null">#{avatar},</if>
+            <if test="address != null">#{address},</if>
+            <if test="workerType != null">#{workerType},</if>
+            <if test="leader != null">#{leader},</if>
+            <if test="position != null">#{position},</if>
+            <if test="idCardUrl != null">#{idCardUrl},</if>
+            <if test="bank != null">#{bank},</if>
+            <if test="bankCard != null">#{bankCard},</if>
+            <if test="bankCardUrl != null">#{bankCardUrl},</if>
+            <if test="status != null">#{status},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWorkersBasic" parameterType="WorkersBasic">
+        update workers_basic
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="workerType != null">worker_type = #{workerType},</if>
+            <if test="leader != null">leader = #{leader},</if>
+            <if test="position != null">position = #{position},</if>
+            <if test="idCardUrl != null">id_card_url = #{idCardUrl},</if>
+            <if test="bank != null">bank = #{bank},</if>
+            <if test="bankCard != null">bank_card = #{bankCard},</if>
+            <if test="bankCardUrl != null">bank_card_url = #{bankCardUrl},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWorkersBasicById" parameterType="Long">
+        delete from workers_basic where id = #{id}
+    </delete>
+
+    <delete id="deleteWorkersBasicByIds" parameterType="String">
+        delete from workers_basic where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteWorkersMonthByWorkerIds" parameterType="String">
+        delete from workers_month where worker_id in 
+        <foreach item="workerId" collection="array" open="(" separator="," close=")">
+            #{workerId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteWorkersMonthByWorkerId" parameterType="Long">
+        delete from workers_month where worker_id = #{workerId}
+    </delete>
+
+    <insert id="batchWorkersMonth">
+        insert into workers_month( id, worker_id, month, hours, price, advance, rest, status, remark, create_by, create_time, update_by, update_time) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.workerId}, #{item.month}, #{item.hours}, #{item.price}, #{item.advance}, #{item.rest}, #{item.status}, #{item.remark}, #{item.createBy}, #{item.createTime}, #{item.updateBy}, #{item.updateTime})
+        </foreach>
+    </insert>
+</mapper>
