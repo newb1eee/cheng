@@ -11,6 +11,7 @@ import com.ruoyi.workers.domain.WorkersMonth;
 import com.ruoyi.workers.mapper.WorkersBasicMapper;
 import com.ruoyi.workers.domain.WorkersBasic;
 import com.ruoyi.workers.service.IWorkersBasicService;
+import org.springframework.util.CollectionUtils;
 
 /**
  * 工人基本信息Service业务层处理
@@ -59,6 +60,13 @@ public class WorkersBasicServiceImpl implements IWorkersBasicService
     public int insertWorkersBasic(WorkersBasic workersBasic)
     {
         workersBasic.setCreateTime(DateUtils.getNowDate());
+        WorkersBasic workersBasic1 = new WorkersBasic();
+        workersBasic1.setName(workersBasic.getName());
+        workersBasic1.setIdCard(workersBasic.getIdCard());
+        List<WorkersBasic> workersBasics = workersBasicMapper.selectWorkersBasicList(workersBasic1);
+        if (CollectionUtils.isEmpty(workersBasics)){
+            throw new RuntimeException("该工人已经创建过了!");
+        }
         int rows = workersBasicMapper.insertWorkersBasic(workersBasic);
         insertWorkersMonth(workersBasic);
         return rows;

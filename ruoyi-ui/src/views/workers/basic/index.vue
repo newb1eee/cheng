@@ -16,6 +16,14 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="身份证" prop="idCard">
+        <el-input
+          v-model="queryParams.idCard"
+          placeholder="请输入身份证"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item label="性别" prop="sex">
         <el-select v-model="queryParams.sex" placeholder="请选择性别" clearable>
           <el-option
@@ -25,30 +33,6 @@
             :value="dict.value"
           />
         </el-select>
-      </el-form-item>
-      <el-form-item label="年纪" prop="age">
-        <el-input
-          v-model="queryParams.age"
-          placeholder="请输入年纪"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="头像" prop="avatar">
-        <el-input
-          v-model="queryParams.avatar"
-          placeholder="请输入头像"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="住址" prop="address">
-        <el-input
-          v-model="queryParams.address"
-          placeholder="请输入住址"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
       </el-form-item>
       <el-form-item label="类别" prop="workerType">
         <el-select
@@ -80,14 +64,6 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="身份证" prop="idCardUrl">
-        <el-input
-          v-model="queryParams.idCardUrl"
-          placeholder="请输入身份证"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="开户行" prop="bank">
         <el-input
           v-model="queryParams.bank"
@@ -100,14 +76,6 @@
         <el-input
           v-model="queryParams.bankCard"
           placeholder="请输入银行卡号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="银行卡" prop="bankCardUrl">
-        <el-input
-          v-model="queryParams.bankCardUrl"
-          placeholder="请输入银行卡"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -205,9 +173,8 @@
           <dict-tag :options="dict.type.sys_user_sex" :value="scope.row.sex" />
         </template>
       </el-table-column>
+      <el-table-column label="身份证" align="center" prop="idCard" />
       <el-table-column label="年纪" align="center" prop="age" />
-      <el-table-column label="头像" align="center" prop="avatar" />
-      <el-table-column label="住址" align="center" prop="address" />
       <el-table-column label="类别" align="center" prop="workerType">
         <template slot-scope="scope">
           <dict-tag
@@ -304,6 +271,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
+            <el-form-item label="身份证" prop="idCard">
+              <el-input
+                v-model="form.idCard"
+                placeholder="请输入身份证"
+                :maxlength="18"
+              /> </el-form-item
+          ></el-col>
+          <el-col :span="8">
             <el-form-item label="头像" prop="avatar">
               <el-input v-model="form.avatar" placeholder="请输入头像" />
             </el-form-item>
@@ -338,13 +313,6 @@
               <el-input
                 v-model="form.position"
                 placeholder="请输入工地"
-              /> </el-form-item
-          ></el-col>
-          <el-col :span="8">
-            <el-form-item label="身份证" prop="idCardUrl">
-              <el-input
-                v-model="form.idCardUrl"
-                placeholder="请输入身份证"
               /> </el-form-item
           ></el-col>
           <el-col :span="8">
@@ -406,12 +374,28 @@
           width="100%"
         >
           <el-table-column type="selection" width="50" align="center" />
+          <el-table-column label="年份" prop="month" min-width="150">
+            <template slot-scope="scope">
+              <el-input-number
+                :min="2020"
+                :max="2050"
+                v-model="scope.row.year"
+                placeholder="请输入年份"
+                :rules="[
+                  { required: true, message: '请选择年份', trigger: 'change' },
+                ]"
+              />
+            </template>
+          </el-table-column>
           <el-table-column label="月份" prop="month" min-width="150">
             <template slot-scope="scope">
               <el-select
                 v-model="scope.row.month"
                 placeholder="请选择月份"
                 collapse-tags
+                :rules="[
+                  { required: true, message: '请选择月份', trigger: 'change' },
+                ]"
               >
                 <el-option
                   v-for="dict in dict.type.workers_month"
@@ -525,6 +509,9 @@ export default {
       rules: {
         name: [{ required: true, message: "姓名不能为空", trigger: "blur" }],
         sex: [{ required: true, message: "性别不能为空", trigger: "change" }],
+        idCard: [
+          { required: true, message: "身份证不能为空", trigger: "change" },
+        ],
       },
     };
   },

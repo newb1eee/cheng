@@ -2,6 +2,7 @@ package com.ruoyi.workers.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.workers.vo.WorkersMonthVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.workers.mapper.WorkersMonthMapper;
@@ -39,9 +40,9 @@ public class WorkersMonthServiceImpl implements IWorkersMonthService
      * @return 工人工时按月划分
      */
     @Override
-    public List<WorkersMonth> selectWorkersMonthList(WorkersMonth workersMonth)
+    public List<WorkersMonthVO> selectWorkersMonthList(WorkersMonth workersMonth)
     {
-        return workersMonthMapper.selectWorkersMonthList(workersMonth);
+        return  workersMonthMapper.getTotalByYearAndMonth(workersMonth);
     }
 
     /**

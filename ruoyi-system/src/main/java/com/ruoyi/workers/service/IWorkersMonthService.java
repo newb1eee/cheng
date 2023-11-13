@@ -1,6 +1,8 @@
 package com.ruoyi.workers.service;
 
 import java.util.List;
+
+import com.ruoyi.workers.vo.WorkersMonthVO;
 import com.ruoyi.workers.domain.WorkersMonth;
 
 /**
@@ -25,7 +27,7 @@ public interface IWorkersMonthService
      * @param workersMonth 工人工时按月划分
      * @return 工人工时按月划分集合
      */
-    public List<WorkersMonth> selectWorkersMonthList(WorkersMonth workersMonth);
+    public List<WorkersMonthVO> selectWorkersMonthList(WorkersMonth workersMonth);
 
     /**
      * 新增工人工时按月划分

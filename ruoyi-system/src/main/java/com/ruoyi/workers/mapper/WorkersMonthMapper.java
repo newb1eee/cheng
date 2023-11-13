@@ -1,6 +1,8 @@
 package com.ruoyi.workers.mapper;
 
 import java.util.List;
+
+import com.ruoyi.workers.vo.WorkersMonthVO;
 import com.ruoyi.workers.domain.WorkersMonth;
 
 /**
@@ -58,4 +60,7 @@ public interface WorkersMonthMapper
      * @return 结果
      */
     public int deleteWorkersMonthByIds(Long[] ids);
+
+
+    public List<WorkersMonthVO> getTotalByYearAndMonth(WorkersMonth workersMonth);
 }
